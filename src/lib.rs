@@ -5,4 +5,7 @@
 
 #![no_std]
 
+pub mod error;
 pub mod registers;
+
+pub use crate::error::{Error, InitStage};
