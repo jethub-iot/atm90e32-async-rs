@@ -146,13 +146,25 @@ fn init_60hz_sets_mmode0_bit12() {
 fn init_freq_thresholds_depend_on_line_frequency() {
     let cfg50 = Config::default().with_line_freq(LineFreq::Hz50);
     let seq50 = build_init_sequence(&cfg50);
-    assert_eq!(seq50.iter().find(|s| s.addr == REG_FREQHITH).unwrap().value, 5300);
-    assert_eq!(seq50.iter().find(|s| s.addr == REG_FREQLOTH).unwrap().value, 4700);
+    assert_eq!(
+        seq50.iter().find(|s| s.addr == REG_FREQHITH).unwrap().value,
+        5300
+    );
+    assert_eq!(
+        seq50.iter().find(|s| s.addr == REG_FREQLOTH).unwrap().value,
+        4700
+    );
 
     let cfg60 = Config::default().with_line_freq(LineFreq::Hz60);
     let seq60 = build_init_sequence(&cfg60);
-    assert_eq!(seq60.iter().find(|s| s.addr == REG_FREQHITH).unwrap().value, 6300);
-    assert_eq!(seq60.iter().find(|s| s.addr == REG_FREQLOTH).unwrap().value, 5700);
+    assert_eq!(
+        seq60.iter().find(|s| s.addr == REG_FREQHITH).unwrap().value,
+        6300
+    );
+    assert_eq!(
+        seq60.iter().find(|s| s.addr == REG_FREQLOTH).unwrap().value,
+        5700
+    );
 }
 
 #[test]
@@ -173,16 +185,34 @@ fn init_pga_gain_propagates_to_mmode1() {
 fn init_voltage_gains_are_threaded_through() {
     let cfg = Config::default().with_voltage_gain([111, 222, 333]);
     let seq = build_init_sequence(&cfg);
-    assert_eq!(seq.iter().find(|s| s.addr == REG_UGAIN_A).unwrap().value, 111);
-    assert_eq!(seq.iter().find(|s| s.addr == REG_UGAIN_B).unwrap().value, 222);
-    assert_eq!(seq.iter().find(|s| s.addr == REG_UGAIN_C).unwrap().value, 333);
+    assert_eq!(
+        seq.iter().find(|s| s.addr == REG_UGAIN_A).unwrap().value,
+        111
+    );
+    assert_eq!(
+        seq.iter().find(|s| s.addr == REG_UGAIN_B).unwrap().value,
+        222
+    );
+    assert_eq!(
+        seq.iter().find(|s| s.addr == REG_UGAIN_C).unwrap().value,
+        333
+    );
 }
 
 #[test]
 fn init_current_gains_are_threaded_through() {
     let cfg = Config::default().with_current_gain([444, 555, 666]);
     let seq = build_init_sequence(&cfg);
-    assert_eq!(seq.iter().find(|s| s.addr == REG_IGAIN_A).unwrap().value, 444);
-    assert_eq!(seq.iter().find(|s| s.addr == REG_IGAIN_B).unwrap().value, 555);
-    assert_eq!(seq.iter().find(|s| s.addr == REG_IGAIN_C).unwrap().value, 666);
+    assert_eq!(
+        seq.iter().find(|s| s.addr == REG_IGAIN_A).unwrap().value,
+        444
+    );
+    assert_eq!(
+        seq.iter().find(|s| s.addr == REG_IGAIN_B).unwrap().value,
+        555
+    );
+    assert_eq!(
+        seq.iter().find(|s| s.addr == REG_IGAIN_C).unwrap().value,
+        666
+    );
 }

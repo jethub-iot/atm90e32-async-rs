@@ -134,6 +134,7 @@ pub const INIT_STEP_COUNT: usize = 22;
 /// register write per entry. The sequence does **not** include the initial
 /// soft reset — that is issued separately by the driver (with its own delay
 /// afterwards).
+#[rustfmt::skip]
 pub fn build_init_sequence(cfg: &Config) -> [InitStep; INIT_STEP_COUNT] {
     // Frequency thresholds depend on mains frequency.
     let (freq_hi, freq_lo) = match cfg.line_freq_hz {

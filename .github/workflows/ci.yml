@@ -1,0 +1,82 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+env:
+  CARGO_TERM_COLOR: always
+  RUSTFLAGS: "-D warnings"
+
+jobs:
+  host:
+    name: Host (fmt, clippy, test, doc)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt, clippy
+      - uses: Swatinem/rust-cache@v2
+
+      - name: rustfmt
+        run: cargo fmt --all -- --check
+
+      - name: clippy (all targets)
+        run: cargo clippy --all-targets --all-features -- -D warnings
+
+      - name: test
+        run: cargo test --all-features
+
+      - name: doc
+        run: cargo doc --no-deps --all-features
+        env:
+          RUSTDOCFLAGS: "-D warnings"
+
+  embedded-thumbv7em:
+    name: Build for thumbv7em-none-eabihf
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: thumbv7em-none-eabihf
+          components: clippy
+      - uses: Swatinem/rust-cache@v2
+      - name: build lib
+        run: cargo build --lib --target thumbv7em-none-eabihf
+      - name: build lib with defmt
+        run: cargo build --lib --target thumbv7em-none-eabihf --features defmt
+      - name: clippy lib
+        run: cargo clippy --lib --target thumbv7em-none-eabihf -- -D warnings
+
+  embedded-riscv32:
+    name: Build for riscv32imc-unknown-none-elf
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: riscv32imc-unknown-none-elf
+          components: clippy
+      - uses: Swatinem/rust-cache@v2
+      - name: build lib
+        run: cargo build --lib --target riscv32imc-unknown-none-elf
+      - name: build lib with defmt
+        run: cargo build --lib --target riscv32imc-unknown-none-elf --features defmt
+      - name: clippy lib
+        run: cargo clippy --lib --target riscv32imc-unknown-none-elf -- -D warnings
+
+  msrv:
+    name: MSRV 1.75
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@1.75.0
+      - uses: Swatinem/rust-cache@v2
+      - name: build lib on MSRV
+        run: cargo build --lib
+      - name: build lib on MSRV with defmt
+        run: cargo build --lib --features defmt
