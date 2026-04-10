@@ -49,8 +49,8 @@ impl Phase {
 /// ## Example
 ///
 /// ```no_run
-/// # use atm90e32::{Atm90e32, Config, LineFreq, PgaGain};
-/// # async fn demo<SPI, D>(spi: SPI, delay: D) -> Result<(), atm90e32::Error<SPI::Error>>
+/// # use atm90e32_async::{Atm90e32, Config, LineFreq, PgaGain};
+/// # async fn demo<SPI, D>(spi: SPI, delay: D) -> Result<(), atm90e32_async::Error<SPI::Error>>
 /// # where
 /// #     SPI: embedded_hal_async::spi::SpiDevice,
 /// #     D:   embedded_hal_async::delay::DelayNs,

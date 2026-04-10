@@ -11,7 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-* Initial release of the `atm90e32` async `no_std` driver.
+* Initial release of the `atm90e32-async` `no_std` driver.
 * `Atm90e32<SPI, D>` struct generic over
   `embedded_hal_async::spi::SpiDevice` and
   `embedded_hal_async::delay::DelayNs`, with no hard dependency on
@@ -58,5 +58,5 @@ detection, zero-crossing interrupts, calibration assist helpers,
 blocking (non-async) API variant, ATM90E36 and ATM90E26 support.
 See README for the full "what's in v0.1" / "not yet" breakdown.
 
-[Unreleased]: https://github.com/jethub-iot/atm90e32/compare/v0.1.0...HEAD
-[0.1.0]: https://github.com/jethub-iot/atm90e32/releases/tag/v0.1.0
+[Unreleased]: https://github.com/jethub-iot/atm90e32-async/compare/v0.1.0...HEAD
+[0.1.0]: https://github.com/jethub-iot/atm90e32-async/releases/tag/v0.1.0

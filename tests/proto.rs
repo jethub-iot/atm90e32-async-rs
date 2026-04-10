@@ -7,9 +7,9 @@
 //! exact byte-level wire format and the raw → engineering unit conversions,
 //! which are the parts of the driver most prone to silent regressions.
 
-use atm90e32::proto::*;
-use atm90e32::registers::*;
-use atm90e32::{Config, InitStage, LineFreq, PgaGain};
+use atm90e32_async::proto::*;
+use atm90e32_async::registers::*;
+use atm90e32_async::{Config, InitStage, LineFreq, PgaGain};
 
 // ── Frame building / parsing ─────────────────────────────────────────
 

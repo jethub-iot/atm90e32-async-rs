@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: (GPL-2.0-or-later OR Apache-2.0)
 // Copyright (c) Viacheslav Bocharov <v@baodeep.com> and JetHome (r)
 
-//! Minimal generic usage example for the `atm90e32` driver.
+//! Minimal generic usage example for the `atm90e32-async` driver.
 //!
 //! This example is `cargo check`-friendly on the host. It uses no-op stubs
 //! for the `embedded-hal-async` SPI and delay traits, so it compiles
@@ -12,7 +12,7 @@
 //! ## Real Embassy + esp-hal integration (sketch)
 //!
 //! ```ignore
-//! use atm90e32::{Atm90e32, Config, LineFreq, PgaGain};
+//! use atm90e32_async::{Atm90e32, Config, LineFreq, PgaGain};
 //! use embassy_executor::Spawner;
 //! use embassy_time::Delay;
 //! use embedded_hal_bus::spi::ExclusiveDevice;
@@ -51,7 +51,7 @@
 
 use core::convert::Infallible;
 
-use atm90e32::{Atm90e32, Config, LineFreq, PgaGain};
+use atm90e32_async::{Atm90e32, Config, LineFreq, PgaGain};
 
 /// A no-op SPI device that always succeeds — compile-check stub only.
 struct DummySpi;
@@ -76,7 +76,7 @@ impl embedded_hal_async::delay::DelayNs for DummyDelay {
     async fn delay_ns(&mut self, _ns: u32) {}
 }
 
-async fn run() -> Result<(), atm90e32::Error<Infallible>> {
+async fn run() -> Result<(), atm90e32_async::Error<Infallible>> {
     let mut meter = Atm90e32::new(DummySpi, DummyDelay);
 
     // probe() against the dummy SPI reads 0x0000, which the driver treats

@@ -51,7 +51,7 @@ impl PgaGain {
 /// methods, e.g.:
 ///
 /// ```no_run
-/// use atm90e32::{Config, LineFreq, PgaGain};
+/// use atm90e32_async::{Config, LineFreq, PgaGain};
 /// let cfg = Config::default()
 ///     .with_voltage_gain([39470, 39470, 39470])
 ///     .with_current_gain([65327, 65327, 65327])

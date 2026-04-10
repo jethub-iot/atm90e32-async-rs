@@ -1,8 +1,8 @@
-# atm90e32
+# atm90e32-async
 
-[![CI](https://github.com/jethub-iot/atm90e32/actions/workflows/ci.yml/badge.svg)](https://github.com/jethub-iot/atm90e32/actions/workflows/ci.yml)
-[![Crates.io](https://img.shields.io/crates/v/atm90e32.svg)](https://crates.io/crates/atm90e32)
-[![Documentation](https://docs.rs/atm90e32/badge.svg)](https://docs.rs/atm90e32)
+[![CI](https://github.com/jethub-iot/atm90e32-async/actions/workflows/ci.yml/badge.svg)](https://github.com/jethub-iot/atm90e32-async/actions/workflows/ci.yml)
+[![Crates.io](https://img.shields.io/crates/v/atm90e32-async.svg)](https://crates.io/crates/atm90e32-async)
+[![Documentation](https://docs.rs/atm90e32-async/badge.svg)](https://docs.rs/atm90e32-async)
 [![License: GPL-2.0-or-later OR Apache-2.0](https://img.shields.io/badge/license-GPL--2.0--or--later%20OR%20Apache--2.0-blue.svg)](#license)
 [![MSRV](https://img.shields.io/badge/MSRV-1.75-red.svg)](#msrv)
 
@@ -57,9 +57,9 @@ What v0.1 does **not** do (PRs welcome):
 ## Quick start
 
 ```rust,no_run
-use atm90e32::{Atm90e32, Config, LineFreq, PgaGain};
+use atm90e32_async::{Atm90e32, Config, LineFreq, PgaGain};
 
-async fn run<SPI, D>(spi: SPI, delay: D) -> Result<(), atm90e32::Error<SPI::Error>>
+async fn run<SPI, D>(spi: SPI, delay: D) -> Result<(), atm90e32_async::Error<SPI::Error>>
 where
     SPI: embedded_hal_async::spi::SpiDevice,
     D:   embedded_hal_async::delay::DelayNs,
