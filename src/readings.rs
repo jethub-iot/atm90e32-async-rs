@@ -12,10 +12,10 @@
 /// * `current` — RMS phase current, amps
 /// * `power` — active power, watts
 /// * `reactive` — reactive power, vars
-/// * `pf` — power factor, dimensionless in `[-1.0, 1.0]`
+/// * `pf` — power factor, dimensionless in -1.0..=1.0
 /// * `frequency` — mains frequency, hertz
 ///
-/// Each `[f32; 3]` array is indexed in phase order A, B, C.
+/// Each three-element array is indexed in phase order A, B, C.
 ///
 /// The field layout is deliberately stable across patch releases so
 /// consumers can destructure by name safely.
@@ -24,16 +24,16 @@
 #[derive(Debug, Clone, Copy, Default, PartialEq)]
 #[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub struct PhaseReadings {
-    /// RMS phase voltage [V], per phase (A, B, C).
+    /// RMS phase voltage in volts, per phase (A, B, C).
     pub voltage: [f32; 3],
-    /// RMS phase current [A], per phase (A, B, C).
+    /// RMS phase current in amps, per phase (A, B, C).
     pub current: [f32; 3],
-    /// Active power [W], per phase (A, B, C).
+    /// Active power in watts, per phase (A, B, C).
     pub power: [f32; 3],
-    /// Reactive power [var], per phase (A, B, C).
+    /// Reactive power in vars, per phase (A, B, C).
     pub reactive: [f32; 3],
     /// Power factor, dimensionless, per phase (A, B, C).
     pub pf: [f32; 3],
-    /// Mains frequency [Hz].
+    /// Mains frequency in hertz.
     pub frequency: f32,
 }

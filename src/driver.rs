@@ -210,21 +210,21 @@ where
 
     // ── Per-phase helpers ────────────────────────────────────────────
 
-    /// Read the RMS voltage of a single phase [V].
+    /// Read the RMS voltage of a single phase in volts.
     pub async fn read_voltage(&mut self, phase: Phase) -> Result<f32, Error<SPI::Error>> {
         const REGS: [u16; 3] = [REG_URMS_A, REG_URMS_B, REG_URMS_C];
         let raw = self.read_register(REGS[phase.index()]).await?;
         Ok(proto::voltage_raw_to_volts(raw))
     }
 
-    /// Read the RMS current of a single phase [A].
+    /// Read the RMS current of a single phase in amps.
     pub async fn read_current(&mut self, phase: Phase) -> Result<f32, Error<SPI::Error>> {
         const REGS: [u16; 3] = [REG_IRMS_A, REG_IRMS_B, REG_IRMS_C];
         let raw = self.read_register(REGS[phase.index()]).await?;
         Ok(proto::current_raw_to_amps(raw))
     }
 
-    /// Read the active power of a single phase [W].
+    /// Read the active power of a single phase in watts.
     pub async fn read_active_power(&mut self, phase: Phase) -> Result<f32, Error<SPI::Error>> {
         const HI: [u16; 3] = [REG_PMEAN_A, REG_PMEAN_B, REG_PMEAN_C];
         const LO: [u16; 3] = [REG_PMEAN_A_LSB, REG_PMEAN_B_LSB, REG_PMEAN_C_LSB];
@@ -234,7 +234,7 @@ where
         Ok(proto::power_raw_to_watts(hi, lo))
     }
 
-    /// Read the reactive power of a single phase [var].
+    /// Read the reactive power of a single phase in vars.
     pub async fn read_reactive_power(&mut self, phase: Phase) -> Result<f32, Error<SPI::Error>> {
         const HI: [u16; 3] = [REG_QMEAN_A, REG_QMEAN_B, REG_QMEAN_C];
         const LO: [u16; 3] = [REG_QMEAN_A_LSB, REG_QMEAN_B_LSB, REG_QMEAN_C_LSB];
@@ -244,14 +244,14 @@ where
         Ok(proto::power_raw_to_watts(hi, lo))
     }
 
-    /// Read the power factor of a single phase (dimensionless, `[-1.0, 1.0]`).
+    /// Read the power factor of a single phase (dimensionless, range `-1.0..=1.0`).
     pub async fn read_power_factor(&mut self, phase: Phase) -> Result<f32, Error<SPI::Error>> {
         const REGS: [u16; 3] = [REG_PFMEAN_A, REG_PFMEAN_B, REG_PFMEAN_C];
         let raw = self.read_register(REGS[phase.index()]).await?;
         Ok(proto::power_factor_raw_to_unitless(raw))
     }
 
-    /// Read the mains line frequency [Hz].
+    /// Read the mains line frequency in hertz.
     pub async fn read_frequency(&mut self) -> Result<f32, Error<SPI::Error>> {
         let raw = self.read_register(REG_FREQ).await?;
         Ok(proto::frequency_raw_to_hz(raw))
