@@ -9,7 +9,9 @@ pub mod config;
 pub mod error;
 #[doc(hidden)]
 pub mod proto;
+pub mod readings;
 pub mod registers;
 
 pub use crate::config::{Config, LineFreq, PgaGain};
 pub use crate::error::{Error, InitStage};
+pub use crate::readings::PhaseReadings;
