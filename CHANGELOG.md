@@ -29,9 +29,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-* `PhaseReadings` now includes `phase_angle: [f32; 3]`.
-  **Breaking**: code that constructs `PhaseReadings` by field name
-  must add the new field.
+* **Breaking — raw-first API**: `PhaseReadings` fields are now raw
+  integer types (`u16`, `i32`, `i16`) instead of `f32`. No
+  floating-point conversion is performed by the driver. Use the
+  `proto::*` helpers for on-demand conversion to engineering units.
+* **Breaking**: all per-phase read methods (`read_voltage`,
+  `read_current`, `read_active_power`, `read_reactive_power`,
+  `read_power_factor`, `read_frequency`, `read_phase_angle`,
+  `read_chip_temperature`) now return raw register values instead
+  of `f32`.
+* `PhaseReadings` now includes `phase_angle: [u16; 3]`.
 * `read_all_phases()` now performs 22 SPI transactions (was 19).
 
 ## [0.1.0] - 2026-04-10

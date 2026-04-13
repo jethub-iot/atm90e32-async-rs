@@ -79,7 +79,13 @@ where
     meter.init(&cfg).await?;
 
     let r = meter.read_all_phases().await?;
-    // r.voltage, r.current, r.power, r.reactive, r.pf, r.frequency, r.phase_angle
+    // Raw values — no f32 conversion until you need it:
+    // r.voltage[0] is hundredths of a volt (u16)
+    // r.power[0] is signed combined register word (i32)
+
+    // Convert on demand:
+    use atm90e32_async::proto;
+    let volts = proto::voltage_raw_to_volts(r.voltage[0]);
 
     let status = meter.read_status().await?;
     // status.overcurrent, status.overvoltage, status.voltage_sag, status.phase_loss
