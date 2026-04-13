@@ -14,8 +14,8 @@
 /// |-------|----------|-----------|
 /// | `voltage` | hundredths of a volt (u16) | [`voltage_raw_to_volts`](crate::proto::voltage_raw_to_volts) |
 /// | `current` | thousandths of an amp (u16) | [`current_raw_to_amps`](crate::proto::current_raw_to_amps) |
-/// | `power` | signed 32-bit combined word | [`power_raw_to_watts`](crate::proto::power_raw_to_watts) |
-/// | `reactive` | signed 32-bit combined word | [`power_raw_to_watts`](crate::proto::power_raw_to_watts) |
+/// | `power` | signed 32-bit combined word (i32) | [`power_combined_to_watts`](crate::proto::power_combined_to_watts) |
+/// | `reactive` | signed 32-bit combined word (i32) | [`power_combined_to_watts`](crate::proto::power_combined_to_watts) |
 /// | `pf` | signed thousandths (i16) | [`power_factor_raw_to_unitless`](crate::proto::power_factor_raw_to_unitless) |
 /// | `frequency` | hundredths of a hertz (u16) | [`frequency_raw_to_hz`](crate::proto::frequency_raw_to_hz) |
 /// | `phase_angle` | tenths of a degree (u16) | [`phase_angle_raw_to_degrees`](crate::proto::phase_angle_raw_to_degrees) |

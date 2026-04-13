@@ -87,6 +87,15 @@ pub fn power_raw_to_watts(high: u16, low: u16) -> f32 {
     combine_power_words(high, low) as f32 * POWER_SCALE
 }
 
+/// Convert a pre-combined 32-bit power word to watts (or vars).
+///
+/// This is the same scaling as [`power_raw_to_watts`] but accepts the
+/// already-combined `i32` value stored in
+/// [`PhaseReadings`](crate::PhaseReadings) `power` and `reactive` fields.
+pub fn power_combined_to_watts(raw: i32) -> f32 {
+    raw as f32 * POWER_SCALE
+}
+
 /// Convert a raw power-factor register value to a dimensionless factor.
 ///
 /// The raw value is a signed 16-bit integer in thousandths (so `1000` → 1.0,

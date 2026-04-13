@@ -152,7 +152,7 @@ where
 
     /// Read all three phases in one call.
     ///
-    /// Issues 22 SPI read transactions (3×U + 3×I + 6×P high/low +
+    /// Issues 25 SPI read transactions (3×U + 3×I + 6×P high/low +
     /// 6×Q high/low + 3×PF + 1×freq + 3×angle) and returns raw
     /// register values without floating-point conversion.
     pub async fn read_all_phases(&mut self) -> Result<PhaseReadings, Error<SPI::Error>> {
@@ -232,8 +232,7 @@ where
     /// Read the raw active power of a single phase.
     ///
     /// Returns a signed 32-bit value assembled from the high and low
-    /// register words. Use
-    /// [`proto::power_raw_to_watts`]
+    /// register words. Use [`proto::power_combined_to_watts`]
     /// to convert to `f32` watts.
     pub async fn read_active_power(&mut self, phase: Phase) -> Result<i32, Error<SPI::Error>> {
         const HI: [u16; 3] = [REG_PMEAN_A, REG_PMEAN_B, REG_PMEAN_C];
@@ -247,8 +246,7 @@ where
     /// Read the raw reactive power of a single phase.
     ///
     /// Returns a signed 32-bit value assembled from the high and low
-    /// register words. Use
-    /// [`proto::power_raw_to_watts`]
+    /// register words. Use [`proto::power_combined_to_watts`]
     /// to convert to `f32` vars.
     pub async fn read_reactive_power(&mut self, phase: Phase) -> Result<i32, Error<SPI::Error>> {
         const HI: [u16; 3] = [REG_QMEAN_A, REG_QMEAN_B, REG_QMEAN_C];
@@ -291,12 +289,11 @@ where
 
     /// Read the raw chip temperature register.
     ///
-    /// Returns a signed value in degrees Celsius. Use
-    /// [`proto::chip_temperature_raw`]
-    /// to convert to `f32`.
-    pub async fn read_chip_temperature(&mut self) -> Result<i16, Error<SPI::Error>> {
-        let raw = self.read_register(REG_TEMP).await?;
-        Ok(raw as i16)
+    /// Returns the raw `u16` register value (signed when interpreted
+    /// as `i16`). Use [`proto::chip_temperature_raw`]
+    /// to convert to `f32` degrees Celsius.
+    pub async fn read_chip_temperature(&mut self) -> Result<u16, Error<SPI::Error>> {
+        self.read_register(REG_TEMP).await
     }
 
     /// Read the EMM status registers and decode phase/frequency conditions.
