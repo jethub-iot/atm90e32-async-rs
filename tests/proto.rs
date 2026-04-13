@@ -100,9 +100,15 @@ fn power_combined_to_watts_matches_split() {
     let hi: u16 = 0x0001;
     let lo: u16 = 0x0000;
     let combined = combine_power_words(hi, lo);
-    assert_eq!(power_combined_to_watts(combined), power_raw_to_watts(hi, lo));
+    assert_eq!(
+        power_combined_to_watts(combined),
+        power_raw_to_watts(hi, lo)
+    );
     // Negative
-    assert_eq!(power_combined_to_watts(-1), power_raw_to_watts(0xFFFF, 0xFFFF));
+    assert_eq!(
+        power_combined_to_watts(-1),
+        power_raw_to_watts(0xFFFF, 0xFFFF)
+    );
     // Zero
     assert_eq!(power_combined_to_watts(0), 0.0);
 }
