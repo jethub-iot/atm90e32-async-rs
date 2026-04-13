@@ -110,6 +110,14 @@ pub fn phase_angle_raw_to_degrees(raw: u16) -> f32 {
     raw as f32 / 10.0
 }
 
+/// Convert a raw chip-temperature register value to degrees Celsius.
+///
+/// The register (`Temp`, 0xFC) is a signed 16-bit integer that reads
+/// directly as degrees Celsius with no additional scaling.
+pub fn chip_temperature_raw(raw: u16) -> f32 {
+    (raw as i16) as f32
+}
+
 // ── Init sequence as data ────────────────────────────────────────────
 
 /// A single write step in the post-reset initialization sequence.

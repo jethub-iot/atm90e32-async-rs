@@ -83,8 +83,10 @@ pub mod error;
 pub mod proto;
 pub mod readings;
 pub mod registers;
+pub mod status;
 
 pub use crate::config::{Config, LineFreq, PgaGain};
 pub use crate::driver::{Atm90e32, Phase};
 pub use crate::error::{Error, InitStage};
 pub use crate::readings::PhaseReadings;
+pub use crate::status::PhaseStatus;

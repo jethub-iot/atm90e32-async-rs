@@ -9,6 +9,7 @@
 
 use atm90e32_async::proto::*;
 use atm90e32_async::registers::*;
+use atm90e32_async::status::PhaseStatus;
 use atm90e32_async::{Config, InitStage, LineFreq, PgaGain};
 
 // ── Frame building / parsing ─────────────────────────────────────────
@@ -227,4 +228,92 @@ fn phase_angle_raw_to_degrees_conversion() {
     assert_eq!(phase_angle_raw_to_degrees(3600), 360.0);
     // Fractional: 45.5 degrees
     assert!((phase_angle_raw_to_degrees(455) - 45.5).abs() < f32::EPSILON);
+}
+
+// ── Chip temperature conversion ─────────────────────────────────────
+
+#[test]
+fn chip_temperature_positive() {
+    assert_eq!(chip_temperature_raw(25), 25.0);
+    assert_eq!(chip_temperature_raw(0), 0.0);
+    assert_eq!(chip_temperature_raw(85), 85.0);
+}
+
+#[test]
+fn chip_temperature_negative() {
+    // -25 as i16 == 0xFFE7 as u16
+    assert_eq!(chip_temperature_raw(0xFFE7), -25.0);
+    // -1 as i16 == 0xFFFF as u16
+    assert_eq!(chip_temperature_raw(0xFFFF), -1.0);
+}
+
+// ── PhaseStatus from EMM registers ──────────────────────────────────
+
+#[test]
+fn phase_status_all_clear() {
+    let st = PhaseStatus::from_emm(0x0000, 0x0000);
+    assert!(st.is_ok());
+    assert_eq!(st, PhaseStatus::default());
+}
+
+#[test]
+fn phase_status_overcurrent_phase_a() {
+    let st = PhaseStatus::from_emm(0x8000, 0x0000);
+    assert!(st.overcurrent[0]);
+    assert!(!st.overcurrent[1]);
+    assert!(!st.overcurrent[2]);
+    assert!(!st.is_ok());
+}
+
+#[test]
+fn phase_status_overcurrent_all_three() {
+    // Bits 15, 14, 13 set = 0xE000
+    let st = PhaseStatus::from_emm(0xE000, 0x0000);
+    assert!(st.overcurrent[0]);
+    assert!(st.overcurrent[1]);
+    assert!(st.overcurrent[2]);
+}
+
+#[test]
+fn phase_status_overvoltage_all_three() {
+    // Bits 12, 11, 10 set = 0x1C00
+    let st = PhaseStatus::from_emm(0x1C00, 0x0000);
+    assert!(st.overvoltage[0]);
+    assert!(st.overvoltage[1]);
+    assert!(st.overvoltage[2]);
+}
+
+#[test]
+fn phase_status_voltage_sag_all_three() {
+    // State1 bits 14, 13, 12 set = 0x7000
+    let st = PhaseStatus::from_emm(0x0000, 0x7000);
+    assert!(st.voltage_sag[0]);
+    assert!(st.voltage_sag[1]);
+    assert!(st.voltage_sag[2]);
+}
+
+#[test]
+fn phase_status_phase_loss_all_three() {
+    // State1 bits 10, 9, 8 set = 0x0700
+    let st = PhaseStatus::from_emm(0x0000, 0x0700);
+    assert!(st.phase_loss[0]);
+    assert!(st.phase_loss[1]);
+    assert!(st.phase_loss[2]);
+}
+
+#[test]
+fn phase_status_freq_high_and_low() {
+    // State1 bit 15 = freq_high, bit 11 = freq_low → 0x8800
+    let st = PhaseStatus::from_emm(0x0000, 0x8800);
+    assert!(st.freq_high);
+    assert!(st.freq_low);
+    assert!(!st.is_ok());
+}
+
+#[test]
+fn phase_status_sequence_errors() {
+    // State0 bit 9 = UREV, bit 8 = IREV → 0x0300
+    let st = PhaseStatus::from_emm(0x0300, 0x0000);
+    assert!(st.voltage_seq_error);
+    assert!(st.current_seq_error);
 }

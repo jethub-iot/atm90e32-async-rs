@@ -15,6 +15,7 @@ use crate::error::{Error, InitStage};
 use crate::proto::{self, build_init_sequence};
 use crate::readings::PhaseReadings;
 use crate::registers::*;
+use crate::status::PhaseStatus;
 
 /// Phase selector for per-phase read methods.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -272,5 +273,21 @@ where
         const REGS: [u16; 3] = [REG_PANGLE_A, REG_PANGLE_B, REG_PANGLE_C];
         let raw = self.read_register(REGS[phase.index()]).await?;
         Ok(proto::phase_angle_raw_to_degrees(raw))
+    }
+
+    /// Read the chip's internal temperature in degrees Celsius.
+    pub async fn read_chip_temperature(&mut self) -> Result<f32, Error<SPI::Error>> {
+        let raw = self.read_register(REG_TEMP).await?;
+        Ok(proto::chip_temperature_raw(raw))
+    }
+
+    /// Read the EMM status registers and decode phase/frequency conditions.
+    ///
+    /// Returns a [`PhaseStatus`] with per-phase overcurrent, overvoltage,
+    /// voltage sag, and phase loss flags, plus frequency threshold warnings.
+    pub async fn read_status(&mut self) -> Result<PhaseStatus, Error<SPI::Error>> {
+        let s0 = self.read_register(REG_EMMSTATE0).await?;
+        let s1 = self.read_register(REG_EMMSTATE1).await?;
+        Ok(PhaseStatus::from_emm(s0, s1))
     }
 }

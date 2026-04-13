@@ -126,6 +126,26 @@ pub const REG_PFMEAN_B: u16 = 0xBE;
 /// Phase C power factor (signed, thousandths).
 pub const REG_PFMEAN_C: u16 = 0xBF;
 
+// ── EMM status ──────────────────────────────────────────────────────
+
+/// EMM state 0 — overcurrent, overvoltage, sequence errors, no-load flags.
+pub const REG_EMMSTATE0: u16 = 0x71;
+/// EMM state 1 — voltage sag, phase loss, frequency warnings, energy direction.
+pub const REG_EMMSTATE1: u16 = 0x72;
+/// EMM interrupt status 0 (latched copy of `EMMSTATE0`, cleared on read).
+pub const REG_EMMINTSTATE0: u16 = 0x73;
+/// EMM interrupt status 1 (latched copy of `EMMSTATE1`, cleared on read).
+pub const REG_EMMINTSTATE1: u16 = 0x74;
+
+// ── Measurement: peak current ───────────────────────────────────────
+
+/// Phase A peak current.
+pub const REG_IPEAK_A: u16 = 0xF5;
+/// Phase B peak current.
+pub const REG_IPEAK_B: u16 = 0xF6;
+/// Phase C peak current.
+pub const REG_IPEAK_C: u16 = 0xF7;
+
 // ── Measurement: line frequency ─────────────────────────────────────
 
 /// Line frequency (raw, hundredths of a hertz).
@@ -139,3 +159,8 @@ pub const REG_PANGLE_A: u16 = 0xF9;
 pub const REG_PANGLE_B: u16 = 0xFA;
 /// Phase C mean phase angle (raw, tenths of a degree).
 pub const REG_PANGLE_C: u16 = 0xFB;
+
+// ── Measurement: chip temperature ───────────────────────────────────
+
+/// Chip temperature (signed, degrees Celsius).
+pub const REG_TEMP: u16 = 0xFC;
