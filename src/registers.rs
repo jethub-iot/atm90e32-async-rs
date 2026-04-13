@@ -130,3 +130,12 @@ pub const REG_PFMEAN_C: u16 = 0xBF;
 
 /// Line frequency (raw, hundredths of a hertz).
 pub const REG_FREQ: u16 = 0xF8;
+
+// ── Measurement: phase angle ────────────────────────────────────────
+
+/// Phase A mean phase angle (raw, tenths of a degree).
+pub const REG_PANGLE_A: u16 = 0xF9;
+/// Phase B mean phase angle (raw, tenths of a degree).
+pub const REG_PANGLE_B: u16 = 0xFA;
+/// Phase C mean phase angle (raw, tenths of a degree).
+pub const REG_PANGLE_C: u16 = 0xFB;

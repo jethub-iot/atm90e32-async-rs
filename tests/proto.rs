@@ -216,3 +216,15 @@ fn init_current_gains_are_threaded_through() {
         666
     );
 }
+
+// ── Phase angle conversion ──────────────────────────────────────────
+
+#[test]
+fn phase_angle_raw_to_degrees_conversion() {
+    assert_eq!(phase_angle_raw_to_degrees(0), 0.0);
+    assert_eq!(phase_angle_raw_to_degrees(900), 90.0);
+    assert_eq!(phase_angle_raw_to_degrees(1800), 180.0);
+    assert_eq!(phase_angle_raw_to_degrees(3600), 360.0);
+    // Fractional: 45.5 degrees
+    assert!((phase_angle_raw_to_degrees(455) - 45.5).abs() < f32::EPSILON);
+}

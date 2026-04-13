@@ -147,8 +147,9 @@ where
 
     /// Read all three phases in one call.
     ///
-    /// Issues 16 SPI read transactions (1 frequency + 3×U + 3×I + 6×P,Q
-    /// high/low + 3×PF) and returns the values in engineering units.
+    /// Issues 22 SPI read transactions (3×U + 3×I + 6×P high/low +
+    /// 6×Q high/low + 3×PF + 1×freq + 3×angle) and returns the values
+    /// in engineering units.
     pub async fn read_all_phases(&mut self) -> Result<PhaseReadings, Error<SPI::Error>> {
         let ua = self.read_register(REG_URMS_A).await?;
         let ub = self.read_register(REG_URMS_B).await?;
@@ -178,6 +179,10 @@ where
 
         let freq = self.read_register(REG_FREQ).await?;
 
+        let ang_a = self.read_register(REG_PANGLE_A).await?;
+        let ang_b = self.read_register(REG_PANGLE_B).await?;
+        let ang_c = self.read_register(REG_PANGLE_C).await?;
+
         Ok(PhaseReadings {
             voltage: [
                 proto::voltage_raw_to_volts(ua),
@@ -205,6 +210,11 @@ where
                 proto::power_factor_raw_to_unitless(pfc),
             ],
             frequency: proto::frequency_raw_to_hz(freq),
+            phase_angle: [
+                proto::phase_angle_raw_to_degrees(ang_a),
+                proto::phase_angle_raw_to_degrees(ang_b),
+                proto::phase_angle_raw_to_degrees(ang_c),
+            ],
         })
     }
 
@@ -255,5 +265,12 @@ where
     pub async fn read_frequency(&mut self) -> Result<f32, Error<SPI::Error>> {
         let raw = self.read_register(REG_FREQ).await?;
         Ok(proto::frequency_raw_to_hz(raw))
+    }
+
+    /// Read the mean phase angle of a single phase in degrees (0..360).
+    pub async fn read_phase_angle(&mut self, phase: Phase) -> Result<f32, Error<SPI::Error>> {
+        const REGS: [u16; 3] = [REG_PANGLE_A, REG_PANGLE_B, REG_PANGLE_C];
+        let raw = self.read_register(REGS[phase.index()]).await?;
+        Ok(proto::phase_angle_raw_to_degrees(raw))
     }
 }

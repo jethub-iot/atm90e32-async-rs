@@ -36,4 +36,6 @@ pub struct PhaseReadings {
     pub pf: [f32; 3],
     /// Mains frequency in hertz.
     pub frequency: f32,
+    /// Mean phase angle in degrees (0..360), per phase (A, B, C).
+    pub phase_angle: [f32; 3],
 }

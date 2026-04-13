@@ -102,6 +102,14 @@ pub fn frequency_raw_to_hz(raw: u16) -> f32 {
     raw as f32 / 100.0
 }
 
+/// Convert a raw phase-angle register value to degrees.
+///
+/// The chip reports the mean phase angle in tenths of a degree
+/// (registers `PAngleA/B/C` at 0xF9–0xFB).
+pub fn phase_angle_raw_to_degrees(raw: u16) -> f32 {
+    raw as f32 / 10.0
+}
+
 // ── Init sequence as data ────────────────────────────────────────────
 
 /// A single write step in the post-reset initialization sequence.
