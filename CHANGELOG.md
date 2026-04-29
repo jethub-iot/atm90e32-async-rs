@@ -7,6 +7,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.2] - 2026-04-29
+
+### Changed
+
+* **Repository URL.** GitHub repo renamed
+  `jethub-iot/atm90e32-async` → `jethub-iot/atm90e32-async-rs` to
+  follow the project-wide `-rs` suffix convention for Rust crates.
+  Updated `repository` / `homepage` in `Cargo.toml`, the CI badge in
+  `README.md`, and the version comparison links in this file. The
+  crates.io package name itself stays `atm90e32-async`.
+
+## [0.2.1] - 2026-04-13
+
+### Changed
+
+* Housekeeping version bump (no functional changes).
+
 ## [0.2.0] - 2026-04-13
 
 ### Added
