@@ -6,7 +6,7 @@ version = 3
 name = "atm90e32-async"
 version = "0.2.2"
 dependencies = [
- "defmt 0.3.100",
+ "defmt 0.3.101",
  "embedded-hal-async",
 ]
 
@@ -18,9 +18,9 @@ checksum = "bef38d45163c2f1dde094a7dfd33ccf595c92905c8f8f4fdc18d06fb1037718a"
 
 [[package]]
 name = "defmt"
-version = "0.3.100"
+version = "0.3.101"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "f0963443817029b2024136fc4dd07a5107eb8f977eaf18fcd1fdeb11306b64ad"
+checksum = "4deef977660e373c458df605a913d4ab121db0ccd18d1ad6976dff7d37cddb53"
 dependencies = [
  "defmt 1.0.1",
 ]
